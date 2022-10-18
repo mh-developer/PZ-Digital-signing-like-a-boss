@@ -32,7 +32,7 @@ class DigitalSigning:
 def start_gui():
     layout = [
         [sg.Text('Datoteka'), sg.InputText(key='_file_input_'), sg.FileBrowse('Odpri')],
-        [sg.Output(size=(88, 20))],
+        [sg.Output(size=(88, 22))],
         [
             sg.Button(button_text='Podpiši', key='_sign_button_'),
             sg.Button(button_text='Preveri', key='_verify_button_'),
@@ -54,17 +54,20 @@ def start_gui():
                 print("------------------------------------------------")
                 start_time = time.process_time()
 
+                with open(filepath, 'rb') as data:
+                    file = data.read()
+
+                signing = DigitalSigning()
+
                 if event == '_sign_button_':
-
-                    with open(filepath, 'rb') as data:
-                        file = data.read()
-
                     print(f"---- INPUTS file: {filepath}")
-                    signature = DigitalSigning().sign(file)
-                    signature_verify = DigitalSigning().verify(file, signature)
-                    print("OUTPUT: ", signature)
-                    print("VERIFY OUTPUT: ", signature_verify)
-
+                    print("OUTPUT: ")
+                    signature = signing.sign(file)
+                    print("------------------------------------------------")
+                    print("------------------------------------------------")
+                    print("VERIFY OUTPUT: ")
+                    signature_verify = signing.verify(file, signature)
+                    print("Is verified?", signature_verify)
                     print("--- End Signing ---")
 
                 elif event == '_verify_button_':
